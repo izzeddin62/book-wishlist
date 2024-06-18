@@ -2,7 +2,8 @@
 import { useMutation } from "@tanstack/react-query";
 import { login } from "../../data";
 import { useState } from "react";
-import { redirect, useNavigate } from "react-router-dom";
+import { Link, redirect, useNavigate } from "react-router-dom";
+import { AxiosError } from "axios";
 
 export function loader() {
     const token = localStorage.getItem('token');
@@ -37,10 +38,11 @@ export default function LoginScreen() {
   };
 
   return (
-    <div className="h-screen bg-[#00000054] flex justify-center items-center shadow-lg">
-      <div className="bg-white w-full max-w-[450px] h-[400px] px-8 pt-8 pb-14">
+    <div className="h-screen bg-[#00000054] flex justify-center items-center">
+      <div className="bg-white w-full max-w-[450px] h-[400px] px-8 pt-8 pb-14 rounded-sm">
         <form action="" onSubmit={handleSubmit}>
           <h1 className="text-3xl text-center mb-5 mt-5">Login</h1>
+          {mutation.error instanceof AxiosError && mutation.error.response?.status === 401 && (<h2 className="text-red-400" >Wrong email or password</h2>)}
           <div className="mb-4">
             <label htmlFor="email" className="block mb-1 text-lg">
               Email
@@ -69,9 +71,10 @@ export default function LoginScreen() {
               required
             />
           </div>
-          <button className="bg-[#324191] text-white py-2.5 px-4 mt-4 rounded-sm">
-            Login
+          <button disabled={mutation.isPending} className="bg-[#324191] text-white py-2.5 px-4 mt-4 rounded-sm">
+            {mutation.isPending ? "Loading..." : "Login"}
           </button>
+          <p className="mt-2 text-gray-600">Not yet joined. Signup <Link to="/signup" className="text-blue-700 underline">here</Link> </p>
         </form>
       </div>
     </div>

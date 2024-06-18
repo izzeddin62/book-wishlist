@@ -16,7 +16,7 @@ export default function Search({ value, filterBy, changeFilterBy, changeValue}: 
 
   return (
     <div className="mt-3">
-      <form className="flex items-center gap-2">
+      <form className="flex items-center gap-2" onSubmit={(e: React.FormEvent) => e.preventDefault()}>
         <div className="flex-1">
           <label
             htmlFor="search"
@@ -49,7 +49,6 @@ export default function Search({ value, filterBy, changeFilterBy, changeValue}: 
               onChange={(e) => changeValue(e.target.value)}
               className="block w-full p-[14px] ps-10 text-sm text-gray-900 border border-gray-300 rounded-sm bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
               placeholder="Search"
-              required
             />
           </div>
         </div>
@@ -60,7 +59,7 @@ export default function Search({ value, filterBy, changeFilterBy, changeValue}: 
             onChange={(e) => changeFilterBy(e.target.value as "title" | "author")}
             className="bg-gray-50 border h-full border-gray-300 text-gray-900 text-sm rounded-sm focus:ring-blue-500 focus:border-blue-500 block w-full px-2.5 py-[15px]"
           >
-            <option>Filter by</option>
+            <option disabled>Filter by</option>
             <option value="title">
               Book title
             </option>

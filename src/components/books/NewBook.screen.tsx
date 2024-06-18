@@ -7,7 +7,7 @@ import { addBook } from "../../data";
 import { useNavigate } from "react-router-dom";
 
 export default function NewBook() {
-    const navigate = useNavigate()
+  const navigate = useNavigate();
   const [bookGenres, setBookGenres] = useState<
     { name: string; selected: boolean }[]
   >(genres.map((genre) => ({ ...genre, selected: false })));
@@ -16,44 +16,48 @@ export default function NewBook() {
     author: "",
     imageUrl: "",
     description: "",
+  });
+
+  const mutation = useMutation({
+    mutationFn: (data: Omit<BookDTO, "owner" | "id" | "done">) => {
+      return addBook(data);
+    },
+    onSuccess: () => {
+      setFormData({
+        title: "",
+        author: "",
+        imageUrl: "",
+        description: "",
+      });
+      setBookGenres((prev) =>
+        prev.map((genre) => ({ ...genre, selected: false }))
+      );
+      navigate("/");
+    },
+  });
+
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    setFormData((prev) => ({
+      ...prev,
+      [e.target.id]: e.target.value,
+    }));
+  };
+
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const genres = bookGenres
+      .filter((genre) => genre.selected)
+      .map((genre) => genre.name);
+    mutation.mutate({
+      title: formData.title.trim(),
+      author: formData.author.trim(),
+      imageUrl: formData.imageUrl.trim() === "" ? null : formData.imageUrl.trim(),
+      description: formData.description.trim(),
+      genres,
     });
-
-    const mutation = useMutation({
-        mutationFn: (data: Omit<BookDTO, 'owner' | 'id' | 'done'>) => {
-            return addBook(data);
-        },
-        onSuccess: () => {
-            setFormData({
-                title: "",
-                author: "",
-                imageUrl: "",
-                description: "",
-            });
-            setBookGenres((prev) =>
-                prev.map((genre) => ({ ...genre, selected: false }))
-            );
-            navigate("/");
-        }
-    })
-
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-        setFormData((prev) => ({
-            ...prev,
-            [e.target.id]: e.target.value,
-        }));
-    }
-
-    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-        e.preventDefault();
-        const genres = bookGenres.filter((genre) => genre.selected).map((genre) => genre.name);
-        mutation.mutate({
-            title: formData.title,
-            author: formData.author,
-            imageUrl: formData.imageUrl === "" ? null : formData.imageUrl,
-            description: formData.description,
-            genres,
-        });
-    }
+  };
 
   return (
     <div>
@@ -66,13 +70,13 @@ export default function NewBook() {
               <Tag
                 key={genre.name}
                 onClick={(value: string) => {
-                    setBookGenres((prev) =>
-                        prev.map((prevGenre) =>
-                        prevGenre.name === value
-                            ? { ...prevGenre, selected: !prevGenre.selected }
-                            : prevGenre
-                        )
-                    );
+                  setBookGenres((prev) =>
+                    prev.map((prevGenre) =>
+                      prevGenre.name === value
+                        ? { ...prevGenre, selected: !prevGenre.selected }
+                        : prevGenre
+                    )
+                  );
                 }}
                 value={genre.name}
                 selected={genre.selected}
@@ -108,6 +112,7 @@ export default function NewBook() {
           <input
             type="text"
             id="author"
+            title="space only are not allowed"
             value={formData.author}
             onChange={handleChange}
             className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
