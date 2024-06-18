@@ -1,30 +1,27 @@
-# React + TypeScript + Vite
+# Book wishlist frontend
+This is the frontend for the book wishlist project. It is a simple React app that allows users to add books to a wishlist.
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+It is built with React, React-router, tanstack query and tailwindcss.
 
-Currently, two official plugins are available:
+If you want to look at the backend, you can find it [here](https://github.com/izzeddin62/book-wishlist-backend)
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Installation
+1. Clone the repository
+2. Run `npm install` to install the dependencies
+3. Create a `.env` file in the root directory and copy the contents of `.env.example` into it
+4. update the `VITE_BACKEND_URL` variable in the `.env` file to point to the backend server
+5. Run `npm run dev` to start the development server
 
-## Expanding the ESLint configuration
+## Build
+To build the project, run `npm run build`. The build files will be in the `dist` directory.
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
-
-- Configure the top-level `parserOptions` property like this:
-
-```js
-export default {
-  // other rules...
-  parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json'],
-    tsconfigRootDir: __dirname,
-  },
-}
+## Project structure
+- `src` contains the source code
+  - `components` contains the react components
+  - `auth` contains the all the component related to authentication(login screen, register screen, etc)
+  - `books` contains the all the component related to books(books list, book details, etc)
+  - `utils` contains utility components ex: Tag
+  - `data` contains all the methods to communicate with the backend
+  - `App.tsx` is the main component(setup the routes and the query client)
+  - `index.tsx` is the entry point
 ```
-
-- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
-- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
