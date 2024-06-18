@@ -1,8 +1,12 @@
 import axios from 'axios';
 import { redirect } from 'react-router-dom';
 
+const url = import.meta.env.VITE_BACKEND_URL as string;
+
+console.log(url, '====')
+
 const backend = axios.create({
-  baseURL: `http://localhost:3000/api`
+  baseURL: `${url}/api`
 });
 
 backend.interceptors.request.use(
